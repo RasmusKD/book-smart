@@ -40,6 +40,13 @@ public final class BookSmart {
         }
     }
 
+    public static void setDropMode(BookSmartConfig.DropMode mode) {
+        if (holder != null && holder.getConfig().dropMode != mode) {
+            holder.getConfig().dropMode = mode;
+            holder.save();
+        }
+    }
+
     public static boolean craftAllEnabled() {
         return shiftClickMode() != BookSmartConfig.ShiftClickMode.VANILLA;
     }
