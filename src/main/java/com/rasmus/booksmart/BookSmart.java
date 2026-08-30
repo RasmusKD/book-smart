@@ -32,6 +32,10 @@ public final class BookSmart {
         return holder == null || holder.getConfig().craftAllOnShiftClick;
     }
 
+    public static boolean holdShiftRequired() {
+        return holder == null || holder.getConfig().holdShiftToContinue;
+    }
+
     public static BookSmartConfig.DropMode dropMode() {
         return holder == null ? BookSmartConfig.DropMode.STOP : holder.getConfig().dropMode;
     }

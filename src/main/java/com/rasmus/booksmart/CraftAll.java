@@ -76,7 +76,7 @@ public final class CraftAll {
             // pointless anyway (the inventory is full), so throw directly.
             // Drop All throws every result without ever banking.
             if (throwMode || BookSmart.dropMode() == BookSmartConfig.DropMode.DROP_ALL) {
-                if (!minecraft.hasShiftDown()) {
+                if (BookSmart.holdShiftRequired() && !minecraft.hasShiftDown()) {
                     cancel();
                     return;
                 }
@@ -92,7 +92,7 @@ public final class CraftAll {
                 // Either switch to throwing the results on the ground, or
                 // stop here, per config. The first throw goes next tick.
                 if (BookSmart.dropMode() != BookSmartConfig.DropMode.DROP_EXCESS
-                        || !minecraft.hasShiftDown()) {
+                        || (BookSmart.holdShiftRequired() && !minecraft.hasShiftDown())) {
                     cancel();
                     return;
                 }
@@ -106,7 +106,7 @@ public final class CraftAll {
             // re-place onto an empty grid: a placement that has to clear
             // leftovers can throw the materials on the ground in creative
             // mode, and materials must never be what gets dropped.
-            if (--rounds <= 0 || !minecraft.hasShiftDown() || !gridEmpty()) {
+            if (--rounds <= 0 || (BookSmart.holdShiftRequired() && !minecraft.hasShiftDown()) || !gridEmpty()) {
                 cancel();
                 return;
             }
@@ -117,7 +117,7 @@ public final class CraftAll {
         } else if (--patience <= 0) {
             // In the throw flow the grid drains without a replacement
             // being sent, so try one placement before giving up.
-            if (!placedAndWaiting && minecraft.hasShiftDown() && gridEmpty()) {
+            if (!placedAndWaiting && (!BookSmart.holdShiftRequired() || minecraft.hasShiftDown()) && gridEmpty()) {
                 minecraft.gameMode.handlePlaceRecipe(menu.containerId, recipe, true);
                 placedAndWaiting = true;
                 // Placing pulls materials out of the inventory, which can

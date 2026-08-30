@@ -13,6 +13,9 @@ public class BookSmartConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean craftAllOnShiftClick = true;
 
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    public boolean holdShiftToContinue = true;
+
     public enum DropMode {
         STOP,
         DROP_EXCESS,
