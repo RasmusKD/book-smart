@@ -2,8 +2,11 @@ package com.rasmus.booksmart.mixin;
 
 import com.rasmus.booksmart.CraftAll;
 import com.rasmus.booksmart.BookSmart;
+import com.rasmus.booksmart.ModeStrip;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.recipebook.GhostSlots;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.world.entity.player.StackedItemContents;
@@ -97,6 +100,29 @@ public abstract class RecipeBookStickyMixin {
 
     @Shadow
     public abstract boolean isVisible();
+
+    @Shadow
+    protected abstract int getXOrigin();
+
+    @Shadow
+    protected abstract int getYOrigin();
+
+    @Inject(method = "extractRenderState", at = @At("TAIL"))
+    private void booksmart$renderModeStrip(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
+            float a, CallbackInfo ci) {
+        if (this.isVisible() && this.menu instanceof AbstractCraftingMenu) {
+            ModeStrip.render(graphics, this.getXOrigin(), this.getYOrigin(), mouseX, mouseY);
+        }
+    }
+
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    private void booksmart$clickModeStrip(MouseButtonEvent event, boolean doubleClick,
+            CallbackInfoReturnable<Boolean> cir) {
+        if (this.isVisible() && event.button() == 0 && this.menu instanceof AbstractCraftingMenu
+                && ModeStrip.mouseClicked(event.x(), event.y(), this.getXOrigin(), this.getYOrigin())) {
+            cir.setReturnValue(true);
+        }
+    }
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void booksmart$releaseWhenGridEmpties(CallbackInfo ci) {

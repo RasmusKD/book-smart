@@ -33,6 +33,13 @@ public final class BookSmart {
                 : holder.getConfig().shiftClickCrafts;
     }
 
+    public static void setShiftClickMode(BookSmartConfig.ShiftClickMode mode) {
+        if (holder != null && holder.getConfig().shiftClickCrafts != mode) {
+            holder.getConfig().shiftClickCrafts = mode;
+            holder.save();
+        }
+    }
+
     public static boolean craftAllEnabled() {
         return shiftClickMode() != BookSmartConfig.ShiftClickMode.VANILLA;
     }
