@@ -102,22 +102,23 @@ public final class CraftAll {
             }
             // Only continue while shift is still held: releasing it ends
             // the run after the current batch, so a misclick costs one
-            // vanilla batch instead of the whole material stock. Only
-            // re-place onto an empty grid: a placement that has to clear
-            // leftovers can throw the materials on the ground in creative
-            // mode, and materials must never be what gets dropped.
-            if (--rounds <= 0 || (BookSmart.holdShiftRequired() && !minecraft.hasShiftDown()) || !gridEmpty()) {
+            // vanilla batch instead of the whole material stock. The next
+            // placement happens below, once the server's slot sync shows
+            // the drained grid; the client's own prediction only removes
+            // one craft, so checking the grid right here reads stale state.
+            if (--rounds <= 0 || (BookSmart.holdShiftRequired() && !minecraft.hasShiftDown())) {
                 cancel();
                 return;
             }
-            minecraft.gameMode.handlePlaceRecipe(menu.containerId, recipe, true);
-            placedAndWaiting = true;
-            throwMode = false;
             patience = PATIENCE_TICKS;
-        } else if (--patience <= 0) {
-            // In the throw flow the grid drains without a replacement
-            // being sent, so try one placement before giving up.
-            if (!placedAndWaiting && (!BookSmart.holdShiftRequired() || minecraft.hasShiftDown()) && gridEmpty()) {
+        } else {
+            // Re-place only onto an empty grid: a placement that has to
+            // clear leftovers can throw the materials on the ground in
+            // creative mode, and materials must never be what gets
+            // dropped. The empty grid arrives with the server's sync, so
+            // check every tick instead of only at the deadline.
+            if (!placedAndWaiting && (!BookSmart.holdShiftRequired() || minecraft.hasShiftDown())
+                    && gridEmpty()) {
                 minecraft.gameMode.handlePlaceRecipe(menu.containerId, recipe, true);
                 placedAndWaiting = true;
                 // Placing pulls materials out of the inventory, which can
@@ -127,12 +128,14 @@ public final class CraftAll {
                 patience = PATIENCE_TICKS;
                 return;
             }
-            // The last placement produced nothing: out of materials. The
-            // server answered it with a ghost recipe; clear that away.
-            if (ghostClearer != null) {
-                ghostClearer.run();
+            if (--patience <= 0) {
+                // The last placement produced nothing: out of materials.
+                // The server answered it with a ghost recipe; clear that.
+                if (ghostClearer != null) {
+                    ghostClearer.run();
+                }
+                cancel();
             }
-            cancel();
         }
     }
 }
