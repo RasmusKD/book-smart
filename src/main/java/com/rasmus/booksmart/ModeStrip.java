@@ -96,6 +96,23 @@ public final class ModeStrip {
                 "Book settings", "Open the Book Smart config", false, mouseX, mouseY);
     }
 
+    /**
+     * The screen setter was renamed setScreen -> setScreenAndShow in 26.2,
+     * so resolve it by name at runtime; the runtime uses Mojang names, so
+     * both spellings are reachable. Reflection is safer than signature
+     * matching here, since clearClientLevel shares the same signature.
+     */
+    private static void openScreen(Minecraft minecraft, net.minecraft.client.gui.screens.Screen screen) {
+        for (String name : new String[] {"setScreenAndShow", "setScreen"}) {
+            try {
+                minecraft.getClass().getMethod(name, net.minecraft.client.gui.screens.Screen.class)
+                        .invoke(minecraft, screen);
+                return;
+            } catch (ReflectiveOperationException ignored) {
+            }
+        }
+    }
+
     /** Returns true when the click landed on the strip and was handled. */
     public static boolean mouseClicked(double mouseX, double mouseY, int xo, int yo) {
         int rowY = yo + OFFSET_Y;
@@ -129,7 +146,7 @@ public final class ModeStrip {
             if (minecraft.player != null) {
                 minecraft.player.closeContainer();
             }
-            minecraft.setScreen(AutoConfigClient.getConfigScreen(
+            openScreen(minecraft, AutoConfigClient.getConfigScreen(
                     com.rasmus.booksmart.config.BookSmartConfig.class, null).get());
             return true;
         }
