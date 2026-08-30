@@ -10,11 +10,16 @@ public class BookSmartConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean stickyCrafting = true;
 
-    @ConfigEntry.Gui.Tooltip(count = 2)
-    public boolean craftAllOnShiftClick = true;
+    public enum ShiftClickMode {
+        VANILLA,
+        ONE_STACK,
+        ALL_WHILE_HELD,
+        ALL
+    }
 
-    @ConfigEntry.Gui.Tooltip(count = 2)
-    public boolean holdShiftToContinue = true;
+    @ConfigEntry.Gui.Tooltip(count = 4)
+    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+    public ShiftClickMode shiftClickCrafts = ShiftClickMode.ALL_WHILE_HELD;
 
     public enum DropMode {
         STOP,

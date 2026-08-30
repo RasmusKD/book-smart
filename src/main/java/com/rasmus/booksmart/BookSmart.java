@@ -28,12 +28,17 @@ public final class BookSmart {
         return holder == null || holder.getConfig().stickyCrafting;
     }
 
+    public static BookSmartConfig.ShiftClickMode shiftClickMode() {
+        return holder == null ? BookSmartConfig.ShiftClickMode.ALL_WHILE_HELD
+                : holder.getConfig().shiftClickCrafts;
+    }
+
     public static boolean craftAllEnabled() {
-        return holder == null || holder.getConfig().craftAllOnShiftClick;
+        return shiftClickMode() != BookSmartConfig.ShiftClickMode.VANILLA;
     }
 
     public static boolean holdShiftRequired() {
-        return holder == null || holder.getConfig().holdShiftToContinue;
+        return shiftClickMode() == BookSmartConfig.ShiftClickMode.ALL_WHILE_HELD;
     }
 
     public static BookSmartConfig.DropMode dropMode() {

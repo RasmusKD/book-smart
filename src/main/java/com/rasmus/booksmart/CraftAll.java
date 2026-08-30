@@ -103,7 +103,8 @@ public final class CraftAll {
             // Only continue while shift is still held: releasing it ends
             // the run after the current batch, so a misclick costs one
             // vanilla batch instead of the whole material stock.
-            if (--rounds <= 0 || (BookSmart.holdShiftRequired() && !minecraft.hasShiftDown())) {
+            if (--rounds <= 0 || (BookSmart.holdShiftRequired() && !minecraft.hasShiftDown())
+                    || BookSmart.shiftClickMode() == BookSmartConfig.ShiftClickMode.ONE_STACK) {
                 cancel();
                 return;
             }
@@ -123,6 +124,7 @@ public final class CraftAll {
             // dropped. The empty grid arrives with the server's sync, so
             // check every tick instead of only at the deadline.
             if (!placedAndWaiting && (!BookSmart.holdShiftRequired() || minecraft.hasShiftDown())
+                    && BookSmart.shiftClickMode() != BookSmartConfig.ShiftClickMode.ONE_STACK
                     && gridEmpty()) {
                 minecraft.gameMode.handlePlaceRecipe(menu.containerId, recipe, true);
                 placedAndWaiting = true;
