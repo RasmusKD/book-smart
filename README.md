@@ -10,6 +10,8 @@ Grouped recipe buttons (like wooden slabs) cycle which variant they show every 1
 - **Remember Variants**: your last crafted variant per button is remembered across sessions, so the slabs button gives you your wood on the first click.
 - **Craft All**: shift click and keep holding shift to craft until the materials run out, results going to your inventory. Release shift to stop, so a misclick costs one vanilla batch. When the inventory overflows, choose: stop, bank what fits and drop the rest, or drop everything. Materials are never what gets dropped.
 
+**In-book controls**: a small strip under the recipe book picks the shift click mode and the overflow mode where you use them, with tooltips and a button that opens the full config.
+
 ## Config
 
 Cloth Config via Mod Menu: Sticky Crafting (on), Remember Variants (on), Craft All on Shift Click (on), When Crafting Overflows (Stop / Drop Excess / Drop All).
