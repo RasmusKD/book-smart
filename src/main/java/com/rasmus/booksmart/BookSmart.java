@@ -88,8 +88,38 @@ public final class BookSmart {
         }
         holder.getConfig().introShown = true;
         holder.save();
-        minecraft.getToastManager().addToast(SystemToast.multiline(minecraft, INTRO_TOAST,
-                Component.translatable("booksmart.intro.title"),
-                Component.translatable("booksmart.intro.message")));
+        try {
+            net.minecraft.client.gui.components.toasts.ToastManager toasts = findToastManager(minecraft);
+            if (toasts != null) {
+                // SystemToast.add is the API both 26.1.x and 26.2 share;
+                // multiline only exists on 26.1.x.
+                SystemToast.add(toasts, INTRO_TOAST,
+                        Component.translatable("booksmart.intro.title"),
+                        Component.translatable("booksmart.intro.message"));
+            }
+        } catch (Throwable ignored) {
+            // The hint is never worth a crash.
+        }
+    }
+
+    /**
+     * The toast manager accessor moved from Minecraft (26.1.x,
+     * getToastManager) to Gui (26.2, toastManager), so a direct call only
+     * links against one of them. Find it by return type instead of by
+     * name, which survives both.
+     */
+    private static net.minecraft.client.gui.components.toasts.ToastManager findToastManager(Minecraft minecraft) {
+        for (Object host : new Object[] {minecraft, minecraft.gui}) {
+            for (java.lang.reflect.Method method : host.getClass().getMethods()) {
+                if (method.getParameterCount() == 0
+                        && method.getReturnType() == net.minecraft.client.gui.components.toasts.ToastManager.class) {
+                    try {
+                        return (net.minecraft.client.gui.components.toasts.ToastManager) method.invoke(host);
+                    } catch (ReflectiveOperationException ignored) {
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

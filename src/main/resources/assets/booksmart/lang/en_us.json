@@ -17,5 +17,5 @@
   "text.autoconfig.booksmart.enum.dropMode.DROP_EXCESS": "Drop Excess",
   "text.autoconfig.booksmart.enum.dropMode.DROP_ALL": "Drop All",
   "booksmart.intro.title": "Book Smart",
-  "booksmart.intro.message": "Recipes stay on the variant you click. Hold shift to craft everything."
+  "booksmart.intro.message": "Variants stick to your click. Hold shift to craft all."
 }
