@@ -5,7 +5,7 @@
   "text.autoconfig.booksmart.option.stickyCrafting.@Tooltip[1]": "Off restores the vanilla 1.5 second variant rotation.",
   "text.autoconfig.booksmart.option.craftAllOnShiftClick": "Craft All on Shift Click",
   "text.autoconfig.booksmart.option.craftAllOnShiftClick.@Tooltip[0]": "Hold shift after the click to keep crafting until the materials run out; release shift to stop.",
-  "text.autoconfig.booksmart.option.craftAllOnShiftClick.@Tooltip[1]": "Off restores the vanilla one-stack shift click.",
+  "text.autoconfig.booksmart.option.craftAllOnShiftClick.@Tooltip[1]": "Off restores the vanilla shift click, which only fills the grid for one stack without crafting.",
   "text.autoconfig.booksmart.option.rememberVariants": "Remember Variants",
   "text.autoconfig.booksmart.option.rememberVariants.@Tooltip[0]": "Remembers which variant you last crafted per button, across sessions, and clicks use it instead of the rotation.",
   "text.autoconfig.booksmart.option.rememberVariants.@Tooltip[1]": "Buttons you have never crafted from keep the vanilla rotation.",
