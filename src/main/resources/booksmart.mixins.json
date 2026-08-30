@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.rasmus.booksmart.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "StackedItemContentsAccessor"
+  ],
+  "client": [
+    "RecipeBookStickyMixin",
+    "RecipeButtonStickyMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

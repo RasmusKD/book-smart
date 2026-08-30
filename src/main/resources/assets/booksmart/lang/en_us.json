@@ -1,0 +1,21 @@
+{
+  "text.autoconfig.booksmart.title": "Book Smart Configuration",
+  "text.autoconfig.booksmart.option.stickyCrafting": "Sticky Crafting",
+  "text.autoconfig.booksmart.option.stickyCrafting.@Tooltip[0]": "The recipe variant you click stays selected while the crafting grid has items.",
+  "text.autoconfig.booksmart.option.stickyCrafting.@Tooltip[1]": "Off restores the vanilla 1.5 second variant rotation.",
+  "text.autoconfig.booksmart.option.craftAllOnShiftClick": "Craft All on Shift Click",
+  "text.autoconfig.booksmart.option.craftAllOnShiftClick.@Tooltip[0]": "Hold shift after the click to keep crafting until the materials run out; release shift to stop.",
+  "text.autoconfig.booksmart.option.craftAllOnShiftClick.@Tooltip[1]": "Off restores the vanilla one-stack shift click.",
+  "text.autoconfig.booksmart.option.rememberVariants": "Remember Variants",
+  "text.autoconfig.booksmart.option.rememberVariants.@Tooltip[0]": "Remembers which variant you last crafted per button, across sessions, and clicks use it instead of the rotation.",
+  "text.autoconfig.booksmart.option.rememberVariants.@Tooltip[1]": "Buttons you have never crafted from keep the vanilla rotation.",
+  "text.autoconfig.booksmart.option.dropMode": "When Crafting Overflows",
+  "text.autoconfig.booksmart.option.dropMode.@Tooltip[0]": "Stop: crafting ends when the inventory is full.",
+  "text.autoconfig.booksmart.option.dropMode.@Tooltip[1]": "Drop Excess: bank what fits, drop the rest on the ground.",
+  "text.autoconfig.booksmart.option.dropMode.@Tooltip[2]": "Drop All: drop every crafted item on the ground, never banking.",
+  "text.autoconfig.booksmart.enum.dropMode.STOP": "Stop",
+  "text.autoconfig.booksmart.enum.dropMode.DROP_EXCESS": "Drop Excess",
+  "text.autoconfig.booksmart.enum.dropMode.DROP_ALL": "Drop All",
+  "booksmart.intro.title": "Book Smart",
+  "booksmart.intro.message": "Recipes stay on the variant you click. Hold shift to craft everything."
+}
