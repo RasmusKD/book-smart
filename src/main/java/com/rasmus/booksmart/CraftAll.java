@@ -102,14 +102,19 @@ public final class CraftAll {
             }
             // Only continue while shift is still held: releasing it ends
             // the run after the current batch, so a misclick costs one
-            // vanilla batch instead of the whole material stock. The next
-            // placement happens below, once the server's slot sync shows
-            // the drained grid; the client's own prediction only removes
-            // one craft, so checking the grid right here reads stale state.
+            // vanilla batch instead of the whole material stock.
             if (--rounds <= 0 || (BookSmart.holdShiftRequired() && !minecraft.hasShiftDown())) {
                 cancel();
                 return;
             }
+            // The placement may go in the same tick as the quick move:
+            // it is not a container click (no state id), and the server
+            // processes the two packets in order, so the grid is already
+            // drained when the placement runs. Only container clicks are
+            // limited to one per tick.
+            minecraft.gameMode.handlePlaceRecipe(menu.containerId, recipe, true);
+            placedAndWaiting = true;
+            throwMode = false;
             patience = PATIENCE_TICKS;
         } else {
             // Re-place only onto an empty grid: a placement that has to
