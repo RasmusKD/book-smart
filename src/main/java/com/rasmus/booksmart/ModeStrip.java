@@ -1,8 +1,10 @@
 package com.rasmus.booksmart;
 
 import com.rasmus.booksmart.config.BookSmartConfig;
+import me.shedaniel.autoconfig.AutoConfigClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.network.chat.Component;
 
 /**
  * A row of four small buttons under the recipe book that picks what a
@@ -25,6 +27,17 @@ public final class ModeStrip {
             BookSmartConfig.DropMode.DROP_ALL,
     };
     private static final String[] DROP_LABELS = {"Stop", "Excess", "Drop all"};
+    private static final String[] TOOLTIPS = {
+            "Vanilla shift click: fills the grid, crafts nothing",
+            "Craft one stack into your inventory",
+            "Craft everything while shift is held",
+            "One click crafts everything",
+    };
+    private static final String[] DROP_TOOLTIPS = {
+            "Stop when the inventory is full",
+            "Bank what fits, drop the rest on the ground",
+            "Drop everything on the ground, never banking",
+    };
     private static final int[] DROP_WIDTHS = {40, 48, 54};
     private static final int BUTTON_WIDTH = 35;
     private static final int BUTTON_HEIGHT = 13;
@@ -34,6 +47,7 @@ public final class ModeStrip {
     private static final int OFFSET_X = (147 - STRIP_WIDTH) / 2;
     private static final int OFFSET_Y = 166 + 2;
     private static final int ROW2_Y = OFFSET_Y + BUTTON_HEIGHT + GAP;
+    private static final int ROW3_Y = ROW2_Y + BUTTON_HEIGHT + GAP;
 
     private ModeStrip() {
     }
@@ -52,9 +66,13 @@ public final class ModeStrip {
     }
 
     private static void drawButton(GuiGraphicsExtractor graphics, int x, int y, int width,
-            String label, boolean isActive, int mouseX, int mouseY) {
+            String label, String tooltip, boolean isActive, int mouseX, int mouseY) {
         boolean hovered = mouseX >= x && mouseX < x + width
                 && mouseY >= y && mouseY < y + BUTTON_HEIGHT;
+        if (hovered && tooltip != null) {
+            graphics.setTooltipForNextFrame(Minecraft.getInstance().font,
+                    Component.literal(tooltip), mouseX, mouseY);
+        }
         graphics.fill(x, y, x + width, y + BUTTON_HEIGHT,
                 isActive ? 0xE8404550 : 0xC0202329);
         graphics.outline(x, y, width, BUTTON_HEIGHT,
@@ -67,13 +85,15 @@ public final class ModeStrip {
         BookSmartConfig.ShiftClickMode active = BookSmart.shiftClickMode();
         for (int i = 0; i < MODES.length; i++) {
             drawButton(graphics, buttonX(xo, i), yo + OFFSET_Y, BUTTON_WIDTH,
-                    LABELS[i], MODES[i] == active, mouseX, mouseY);
+                    LABELS[i], TOOLTIPS[i], MODES[i] == active, mouseX, mouseY);
         }
         BookSmartConfig.DropMode drop = BookSmart.dropMode();
         for (int i = 0; i < DROP_MODES.length; i++) {
             drawButton(graphics, dropButtonX(xo, i), yo + ROW2_Y, DROP_WIDTHS[i],
-                    DROP_LABELS[i], DROP_MODES[i] == drop, mouseX, mouseY);
+                    DROP_LABELS[i], DROP_TOOLTIPS[i], DROP_MODES[i] == drop, mouseX, mouseY);
         }
+        drawButton(graphics, xo + OFFSET_X, yo + ROW3_Y, STRIP_WIDTH,
+                "Book settings", "Open the Book Smart config", false, mouseX, mouseY);
     }
 
     /** Returns true when the click landed on the strip and was handled. */
@@ -98,6 +118,20 @@ public final class ModeStrip {
                     return true;
                 }
             }
+            return false;
+        }
+        rowY = yo + ROW3_Y;
+        if (mouseY >= rowY && mouseY < rowY + BUTTON_HEIGHT
+                && mouseX >= xo + OFFSET_X && mouseX < xo + OFFSET_X + STRIP_WIDTH) {
+            Minecraft minecraft = Minecraft.getInstance();
+            // The container must be closed properly before switching
+            // screens, or its menu is left dangling server side.
+            if (minecraft.player != null) {
+                minecraft.player.closeContainer();
+            }
+            minecraft.setScreen(AutoConfigClient.getConfigScreen(
+                    com.rasmus.booksmart.config.BookSmartConfig.class, null).get());
+            return true;
         }
         return false;
     }
