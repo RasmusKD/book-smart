@@ -24,7 +24,7 @@ public class BookSmartConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip(count = 3)
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-    public DropMode dropMode = DropMode.STOP;
+    public DropMode dropMode = DropMode.DROP_EXCESS;
 
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean rememberVariants = true;
