@@ -8,7 +8,7 @@ Read the `minecraft-mods` skill first (`C:\Users\Rasmus\.claude\skills\minecraft
 
 - Java 25: `JAVA_HOME=C:\Users\Rasmus\.jdks\jdk-25.0.3+9`, then `./gradlew build`. The jar is written to `build/libs/`.
 - No unit tests; the check is a clean build plus a run in a Modrinth App instance (see the skill).
-- The 26.1 and 26.2 versions differ in the toast manager and screen setters; resolve by name through reflection, and compile against 26.2 with `-Pminecraft_version=26.2 -Pfabric_version=0.158.0+26.2` before claiming support.
+- Two jars: `./gradlew build` (26.1.x and 26.2, `booksmart-X.Y.Z+26.1.jar`) and `./gradlew build -PmcTarget=26.3` (`+26.3`); see `VERSIONS.md`. The 26.1 and 26.2 versions differ in the toast manager and screen setters; resolve by name through reflection, and compile against 26.2 with `-Pminecraft_version=26.2 -Pfabric_version=0.158.0+26.2` before claiming support.
 - Container clicks carry a state id: at most one click per tick, or the server ignores them and the craft loop stalls.
 
 ## Release

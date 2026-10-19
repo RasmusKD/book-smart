@@ -3,6 +3,7 @@ package com.rasmus.booksmart.mixin;
 import com.rasmus.booksmart.CraftAll;
 import com.rasmus.booksmart.BookSmart;
 import com.rasmus.booksmart.ModeStrip;
+import com.rasmus.booksmart.MouseButtons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.recipebook.GhostSlots;
@@ -118,7 +119,7 @@ public abstract class RecipeBookStickyMixin {
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
     private void booksmart$clickModeStrip(MouseButtonEvent event, boolean doubleClick,
             CallbackInfoReturnable<Boolean> cir) {
-        if (this.isVisible() && event.button() == 0 && this.menu instanceof AbstractCraftingMenu
+        if (this.isVisible() && MouseButtons.isLeft(event.button()) && this.menu instanceof AbstractCraftingMenu
                 && ModeStrip.mouseClicked(event.x(), event.y(), this.getXOrigin(), this.getYOrigin())) {
             cir.setReturnValue(true);
         }
